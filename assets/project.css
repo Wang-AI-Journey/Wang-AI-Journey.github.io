@@ -195,7 +195,7 @@
 .article-hero h1{max-width:1240px;margin:.85rem 0 0;font:500 clamp(3rem,6.2vw,6.6rem)/1.02 var(--serif);letter-spacing:-.06em;text-wrap:balance}
 .article-deck{max-width:900px;margin:2.2rem 0 0;color:var(--muted);font:500 clamp(1.2rem,2vw,1.65rem)/1.58 var(--serif)}
 .article-layout{display:grid;grid-template-columns:minmax(0,760px) minmax(250px,330px);gap:clamp(4rem,10vw,10rem);justify-content:space-between;padding:6rem 0 9rem}
-.article-layout-single{grid-template-columns:minmax(0,820px);justify-content:start}
+.article-layout.article-layout-single{grid-template-columns:minmax(0,1fr);max-width:820px;justify-content:start}
 .article-body h2{margin:5rem 0 1.5rem;font:500 clamp(2rem,3.2vw,3.25rem)/1.16 var(--serif);letter-spacing:-.035em}
 .article-body h2:first-child{margin-top:0}
 .article-body>p{margin:0 0 1.5rem;color:var(--muted);font-size:1.04rem;line-height:1.95}

@@ -1,4 +1,5 @@
 const root = document.documentElement;
+// Keep visible content and accessibility labels in the selected language.
 const langButton = document.querySelector("[data-lang]");
 const themeButton = document.querySelector("[data-theme-toggle]");
 const header = document.querySelector("[data-header]");
@@ -25,6 +26,17 @@ function setLanguage(language) {
     node.textContent = node.dataset[key];
   });
   root.lang = key === "en" ? "en" : "zh-CN";
+  document.querySelectorAll("[data-alt-zh][data-alt-en]").forEach((node) => {
+    node.alt = node.dataset[key === "en" ? "altEn" : "altZh"];
+  });
+  document.querySelectorAll("[data-aria-zh][data-aria-en]").forEach((node) => {
+    node.setAttribute("aria-label", node.dataset[key === "en" ? "ariaEn" : "ariaZh"]);
+  });
+  const description = document.querySelector('meta[name="description"]');
+  if (description?.dataset.descriptionEn && description.dataset.descriptionZh) {
+    description.content = description.dataset[key === "en" ? "descriptionEn" : "descriptionZh"];
+  }
+  updateThemeLabel();
   if (langButton) {
     langButton.textContent = key === "en" ? "中文" : "EN";
     langButton.setAttribute("aria-label", key === "en" ? "切换为中文" : "Switch to English");
@@ -37,12 +49,19 @@ function setLanguage(language) {
   savePreference("site-language", key);
 }
 
-function setTheme(theme) {
-  root.dataset.theme = theme;
+function updateThemeLabel() {
   if (themeButton) {
-    themeButton.setAttribute("aria-label", theme === "night" ? "切换浅色模式" : "切换深色模式");
+    const night = root.dataset.theme === "night";
+    themeButton.setAttribute("aria-label", root.lang === "en"
+      ? (night ? "Switch to light theme" : "Switch to dark theme")
+      : (night ? "切换浅色模式" : "切换深色模式"));
     themeButton.title = themeButton.getAttribute("aria-label");
   }
+}
+
+function setTheme(theme) {
+  root.dataset.theme = theme;
+  updateThemeLabel();
   const themeColor = document.querySelector('meta[name="theme-color"]') || document.head.appendChild(Object.assign(document.createElement("meta"), { name: "theme-color" }));
   themeColor.content = theme === "night" ? "#101512" : "#f2efe8";
   savePreference("site-theme", theme);
